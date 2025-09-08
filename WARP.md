@@ -82,7 +82,7 @@ The project uses Gradle 8.4 with Java 8 compatibility settings. The Gradle wrapp
 ### Build Configuration
 - **Group ID**: `com.faceunity`
 - **Artifact ID**: `faceunity-sdk`
-- **Current Version**: 1.0.3
+- **Current Version**: 1.0.4
 - **Java Version**: 1.8 (source and target compatibility)
 - **Gradle Version**: 8.4
 
@@ -115,7 +115,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.sqmyeren:faceunity:v1.0.3'
+    implementation 'com.github.sqmyeren:faceunity:v1.0.4'
 }
 ```
 
@@ -129,7 +129,7 @@ dependencies {
 <dependency>
     <groupId>com.github.sqmyeren</groupId>
     <artifactId>faceunity</artifactId>
-    <version>v1.0.3</version>
+    <version>v1.0.4</version>
 </dependency>
 ```
 
