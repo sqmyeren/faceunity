@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'maven-publish'
 
 group = 'com.faceunity'
-version = '1.0.2'
+version = '1.0.3'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -21,6 +21,15 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+}
+
+// Include .aar files in the main jar
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    from 'libs'
 }
 
 // Create a source jar
