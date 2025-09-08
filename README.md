@@ -1,0 +1,116 @@
+# FaceUnity SDK for JitPack
+
+[![](https://jitpack.io/v/sqmyeren/faceunity.svg)](https://jitpack.io/#sqmyeren/faceunity)
+
+This library packages FaceUnity's Android AAR libraries into a JAR format for easy distribution via JitPack.
+
+## Installation
+
+### Gradle
+
+Add JitPack repository to your root build.gradle:
+
+```gradle
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Add the dependency:
+
+```gradle
+dependencies {
+    implementation 'com.github.sqmyeren:faceunity:v1.0.5'
+}
+```
+
+### Maven
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependency>
+    <groupId>com.github.sqmyeren</groupId>
+    <artifactId>faceunity</artifactId>
+    <version>v1.0.5</version>
+</dependency>
+```
+
+## Important Notes
+
+### ⚠️ DO NOT Include Original AAR Files
+
+If you're using this library, **DO NOT** include the original FaceUnity AAR files in your project:
+- ❌ Do not add `fu-core-1.0.0.aar`
+- ❌ Do not add `fu-model-1.0.0.aar`
+
+This library already contains all the necessary classes from these AARs. Including both will cause duplicate class errors.
+
+### Native Libraries (.so files)
+
+This JAR library contains only the Java/Kotlin classes from the FaceUnity SDK. Native libraries (.so files) are not included because:
+- Android's build system expects native libraries in specific AAR/APK structures
+- JAR files cannot properly distribute native libraries for Android
+
+If you need the native libraries, you should:
+1. Extract them from the original AAR files
+2. Place them in your project's `src/main/jniLibs` directory
+3. Or use the original AAR files directly instead of this JAR wrapper
+
+### Build Configuration Issues
+
+If you encounter duplicate class errors like:
+```
+Duplicate class com.faceunity.core.BuildConfig found in modules...
+```
+
+Make sure you're not including both this library and the original AAR files in your project.
+
+## What's Included
+
+This library includes:
+- ✅ All Java/Kotlin classes from `fu-core-1.0.0.aar`
+- ✅ All Java/Kotlin classes from `fu-model-1.0.0.aar`
+- ❌ BuildConfig classes (excluded to prevent conflicts)
+- ❌ R classes (excluded to prevent conflicts)
+- ❌ Native libraries (.so files)
+
+## Version History
+
+- **v1.0.5** - Exclude BuildConfig and R classes to prevent duplicate class errors
+- **v1.0.4** - Fix AAR class extraction for Android compatibility
+- **v1.0.3** - Include AAR files in jar build
+- **v1.0.2** - Add .gitignore and clean up build artifacts
+- **v1.0.1** - Standard Gradle library structure with maven-publish
+- **v1.0.0** - Initial release
+
+## Building from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/sqmyeren/faceunity.git
+cd faceunity
+
+# Build the JAR
+./gradlew clean build
+
+# The JAR will be in build/libs/
+```
+
+## License
+
+This is a wrapper library for FaceUnity SDK. Please refer to FaceUnity's original license terms.
+
+## Support
+
+For issues related to this JitPack wrapper, please open an issue on [GitHub](https://github.com/sqmyeren/faceunity/issues).
+
+For FaceUnity SDK specific issues, please contact FaceUnity support.

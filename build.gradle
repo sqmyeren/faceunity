@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'maven-publish'
 
 group = 'com.faceunity'
-version = '1.0.4'
+version = '1.0.5'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -46,19 +46,22 @@ jar {
     dependsOn extractAARs
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     
-    // Include classes from AAR files
+    // Include classes from AAR files (excluding BuildConfig and R classes)
     from {
         fileTree("build/extracted-aar").matching {
             include "*/classes.jar"
-        }.collect { zipTree(it) }
-    }
-    
-    // Include native libraries from AAR files
-    from {
-        fileTree("build/extracted-aar").matching {
-            include "*/jni/**/*.so"
+        }.collect { 
+            zipTree(it).matching {
+                exclude '**/BuildConfig.class'
+                exclude '**/BuildConfig$*.class'
+                exclude '**/R.class'
+                exclude '**/R$*.class'
+            }
         }
     }
+    
+    // Note: Native libraries (.so files) should not be included in JAR for Android
+    // Android expects them in the AAR/APK structure, not in JARs
 }
 
 // Create a source jar

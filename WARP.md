@@ -82,7 +82,7 @@ The project uses Gradle 8.4 with Java 8 compatibility settings. The Gradle wrapp
 ### Build Configuration
 - **Group ID**: `com.faceunity`
 - **Artifact ID**: `faceunity-sdk`
-- **Current Version**: 1.0.4
+- **Current Version**: 1.0.5
 - **Java Version**: 1.8 (source and target compatibility)
 - **Gradle Version**: 8.4
 
@@ -115,7 +115,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.sqmyeren:faceunity:v1.0.4'
+    implementation 'com.github.sqmyeren:faceunity:v1.0.5'
 }
 ```
 
@@ -129,7 +129,7 @@ dependencies {
 <dependency>
     <groupId>com.github.sqmyeren</groupId>
     <artifactId>faceunity</artifactId>
-    <version>v1.0.4</version>
+    <version>v1.0.5</version>
 </dependency>
 ```
 
@@ -152,3 +152,6 @@ The JAR task uses `DuplicatesStrategy.EXCLUDE` to handle any duplicate files whe
 
 ### Source Compatibility
 Maintains Java 8 compatibility for broader project support while using Gradle 8.4 and JVM 21 for the build environment.
+
+### Excluded Classes
+The build process excludes BuildConfig and R classes to prevent duplicate class conflicts when used in Android projects.
