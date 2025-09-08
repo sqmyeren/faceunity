@@ -1,0 +1,60 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'com.faceunity'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            
+            groupId = project.group
+            artifactId = 'faceunity-sdk'
+            version = project.version
+            
+            pom {
+                name = 'FaceUnity SDK'
+                description = 'FaceUnity face recognition and beauty SDK'
+                url = 'https://github.com/faceunity/faceunity'
+                
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                
+                developers {
+                    developer {
+                        id = 'faceunity'
+                        name = 'FaceUnity'
+                        email = 'support@faceunity.com'
+                    }
+                }
+                
+                scm {
+                    connection = 'scm:git:git://github.com/faceunity/faceunity.git'
+                    developerConnection = 'scm:git:ssh://github.com:faceunity/faceunity.git'
+                    url = 'https://github.com/faceunity/faceunity/tree/main'
+                }
+            }
+        }
+    }
+}
