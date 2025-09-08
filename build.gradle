@@ -42,7 +42,7 @@ publishing {
             pom {
                 name = 'FaceUnity SDK'
                 description = 'FaceUnity face recognition and beauty SDK'
-                url = 'https://github.com/faceunity/faceunity'
+                url = 'https://github.com/sqmyeren/faceunity'
                 
                 licenses {
                     license {
@@ -60,9 +60,9 @@ publishing {
                 }
                 
                 scm {
-                    connection = 'scm:git:git://github.com/faceunity/faceunity.git'
-                    developerConnection = 'scm:git:ssh://github.com:faceunity/faceunity.git'
-                    url = 'https://github.com/faceunity/faceunity/tree/main'
+                    connection = 'scm:git:git://github.com/sqmyeren/faceunity.git'
+                    developerConnection = 'scm:git:ssh://github.com:sqmyeren/faceunity.git'
+                    url = 'https://github.com/sqmyeren/faceunity/tree/main'
                 }
             }
         }
