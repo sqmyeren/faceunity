@@ -3,8 +3,11 @@ plugins {
     id 'maven-publish'
 }
 
+// JitPack requirement
+apply plugin: 'maven-publish'
+
 group = 'com.faceunity'
-version = '1.0.0'
+version = '1.0.1'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -20,10 +23,17 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 }
 
+// Create a source jar
+task sourceJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
             from components.java
+            artifact sourceJar
             
             groupId = project.group
             artifactId = 'faceunity-sdk'
