@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'maven-publish'
 
 group = 'com.faceunity'
-version = '1.0.3'
+version = '1.0.4'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -19,17 +19,46 @@ repositories {
     google()
 }
 
+configurations {
+    aarLibs
+}
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    aarLibs fileTree(dir: 'libs', include: ['*.aar'])
+}
+
+// Extract AAR files
+task extractAARs {
+    doLast {
+        configurations.aarLibs.files.each { file ->
+            if (file.name.endsWith('.aar')) {
+                copy {
+                    from zipTree(file)
+                    into "build/extracted-aar/${file.name}"
+                }
+            }
+        }
+    }
 }
 
 // Include .aar files in the main jar
 jar {
+    dependsOn extractAARs
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    
+    // Include classes from AAR files
     from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        fileTree("build/extracted-aar").matching {
+            include "*/classes.jar"
+        }.collect { zipTree(it) }
     }
-    from 'libs'
+    
+    // Include native libraries from AAR files
+    from {
+        fileTree("build/extracted-aar").matching {
+            include "*/jni/**/*.so"
+        }
+    }
 }
 
 // Create a source jar
