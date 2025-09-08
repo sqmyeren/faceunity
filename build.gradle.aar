@@ -1,0 +1,60 @@
+// This is an alternative build file that creates an AAR instead of JAR
+// To use this, rename it to build.gradle
+
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+android {
+    compileSdkVersion 33
+    
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0.6"
+    }
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    // Include the original AAR files
+    api files('libs/fu-core-1.0.0.aar')
+    api files('libs/fu-model-1.0.0.aar')
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                
+                groupId = 'com.github.sqmyeren'
+                artifactId = 'faceunity'
+                version = '1.0.6'
+                
+                pom {
+                    name = 'FaceUnity SDK'
+                    description = 'FaceUnity face recognition and beauty SDK - AAR wrapper'
+                    url = 'https://github.com/sqmyeren/faceunity'
+                }
+            }
+        }
+    }
+}
