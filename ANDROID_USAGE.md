@@ -1,12 +1,33 @@
 # 在Android项目中使用FaceUnity SDK的正确方法
 
-## 问题说明
+## 更新：v1.0.6 已解决问题！
 
-FaceUnity SDK包含原生库（.so文件），这些是用C/C++编写的核心算法。JAR格式无法正确分发这些原生库，因此通过JitPack分发JAR版本会导致运行时错误。
+从v1.0.6版本开始，我们正确地通过JitPack发布AAR文件，保留了所有原生库和必需组件。
 
 ## 解决方案
 
-### 方法1：直接使用AAR文件（最简单）
+### 方法1：使用JitPack（推荐，v1.0.6+）
+
+1. **添加JitPack仓库**
+   ```gradle
+   allprojects {
+       repositories {
+           google()
+           mavenCentral()
+           maven { url 'https://jitpack.io' }
+       }
+   }
+   ```
+
+2. **添加依赖（两个都需要）**
+   ```gradle
+   dependencies {
+       implementation 'com.github.sqmyeren:fu-core:v1.0.6'
+       implementation 'com.github.sqmyeren:fu-model:v1.0.6'
+   }
+   ```
+
+### 方法2：直接使用本地AAR文件
 
 1. **下载AAR文件**
    - 下载 `fu-core-1.0.0.aar`

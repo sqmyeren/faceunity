@@ -1,110 +1,50 @@
 plugins {
-    id 'java-library'
     id 'maven-publish'
 }
 
-// JitPack requirement
-apply plugin: 'maven-publish'
-
-group = 'com.faceunity'
-version = '1.0.5'
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
+group = 'com.github.sqmyeren'
+version = '1.0.6'
 
 repositories {
     mavenCentral()
     google()
 }
 
-configurations {
-    aarLibs
-}
-
-dependencies {
-    aarLibs fileTree(dir: 'libs', include: ['*.aar'])
-}
-
-// Extract AAR files
-task extractAARs {
-    doLast {
-        configurations.aarLibs.files.each { file ->
-            if (file.name.endsWith('.aar')) {
-                copy {
-                    from zipTree(file)
-                    into "build/extracted-aar/${file.name}"
-                }
-            }
-        }
-    }
-}
-
-// Include .aar files in the main jar
-jar {
-    dependsOn extractAARs
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    
-    // Include classes from AAR files (excluding BuildConfig and R classes)
-    from {
-        fileTree("build/extracted-aar").matching {
-            include "*/classes.jar"
-        }.collect { 
-            zipTree(it).matching {
-                exclude '**/BuildConfig.class'
-                exclude '**/BuildConfig$*.class'
-                exclude '**/R.class'
-                exclude '**/R$*.class'
-            }
-        }
-    }
-    
-    // Note: Native libraries (.so files) should not be included in JAR for Android
-    // Android expects them in the AAR/APK structure, not in JARs
-}
-
-// Create a source jar
-task sourceJar(type: Jar) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
-}
-
 publishing {
     publications {
-        maven(MavenPublication) {
-            from components.java
-            artifact sourceJar
+        // Publish fu-core AAR
+        fuCore(MavenPublication) {
+            groupId = 'com.github.sqmyeren'
+            artifactId = 'fu-core'
+            version = '1.0.6'
             
-            groupId = project.group
-            artifactId = 'faceunity-sdk'
-            version = project.version
+            artifact('libs/fu-core-1.0.0.aar') {
+                extension = 'aar'
+            }
             
             pom {
-                name = 'FaceUnity SDK'
-                description = 'FaceUnity face recognition and beauty SDK'
+                name = 'FaceUnity Core SDK'
+                description = 'FaceUnity core library with native components'
                 url = 'https://github.com/sqmyeren/faceunity'
-                
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                
-                developers {
-                    developer {
-                        id = 'faceunity'
-                        name = 'FaceUnity'
-                        email = 'support@faceunity.com'
-                    }
-                }
-                
-                scm {
-                    connection = 'scm:git:git://github.com/sqmyeren/faceunity.git'
-                    developerConnection = 'scm:git:ssh://github.com:sqmyeren/faceunity.git'
-                    url = 'https://github.com/sqmyeren/faceunity/tree/main'
-                }
+                packaging = 'aar'
+            }
+        }
+        
+        // Publish fu-model AAR
+        fuModel(MavenPublication) {
+            groupId = 'com.github.sqmyeren'
+            artifactId = 'fu-model'
+            version = '1.0.6'
+            
+            artifact('libs/fu-model-1.0.0.aar') {
+                extension = 'aar'
+            }
+            
+            pom {
+                name = 'FaceUnity Model SDK'
+                description = 'FaceUnity model library'
+                url = 'https://github.com/sqmyeren/faceunity'
+                packaging = 'aar'
             }
         }
     }
